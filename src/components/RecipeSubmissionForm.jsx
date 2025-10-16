@@ -1,22 +1,7 @@
 import { useState } from "react";
+import "./RecipeSubmissionForm.css"
 
-
-
-const RecipeSubmissionForm = () => {
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-        servings: '',
-        difficulty_level:'',
-        category:'',
-        cuisine_type:''
-    })
-
-    
-    const handleChange = (event) =>{
-        const { name, value } = event.target //grabbing the name and value properties from the input element
-        setFormData(prevData => ({...prevData, [name]:value})) // creating new object, spreading old object, update the key that we are changing        
-    }
+const RecipeSubmissionForm = ({handleChange, formData}) => {
 
   return (
     <>
