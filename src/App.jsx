@@ -1,4 +1,4 @@
-import RecipeSubmissionForm from "./components/RecipeSubmissionForm"
+import RecipeSubmissionForm from "./components/RecipeSubmissionForm/RecipeSubmissionForm"
 import RecipeView from "./views/RecipeView"
 function App() {
 

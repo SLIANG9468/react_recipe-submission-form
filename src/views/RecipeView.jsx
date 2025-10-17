@@ -1,6 +1,6 @@
-import RecipeSubmissionForm from "../components/RecipeSubmissionForm";
+import RecipeSubmissionForm from "../components/RecipeSubmissionForm/RecipeSubmissionForm";
 import { useState } from "react";
-
+import RecipeList from "../components/RecipeList/RecipeList";
 import React from 'react'
 
 const RecipeView = () => {
@@ -8,21 +8,24 @@ const RecipeView = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        servings: '',
-        difficulty_level:'',
-        category:'',
-        cuisine_type:''
+        servings: 0,
+        difficulty_level:'Easy',
+        category:'Appeitizer',
+        cuisine_type:'American',
+        recipe_image:'',
+        ingredient_name:'',
+        ingredient_quantity:0,
+        ingredient_unit:'cups',
+        ingredients:[]/* array of ingredients */
     })
 
-    
-    const handleChange = (event) =>{
-        const { name, value } = event.target //grabbing the name and value properties from the input element
-        setFormData(prevData => ({...prevData, [name]:value})) // creating new object, spreading old object, update the key that we are changing        
-    }
+    const [recipes, setRecipes] = useState([])
+
   return (
-    <>
-        <RecipeSubmissionForm handleChange={handleChange} formData={formData}/>
-    </>
+    <div className='main'>
+        <RecipeSubmissionForm className='recipeForm' setFormData={setFormData} formData={formData} setRecipes={setRecipes}/>
+        <RecipeList className='recipeList' recipes={recipes}/>
+    </div>
   )
 }
 
