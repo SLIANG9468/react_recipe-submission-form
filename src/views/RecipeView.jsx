@@ -1,7 +1,6 @@
 import RecipeSubmissionForm from "../components/RecipeSubmissionForm/RecipeSubmissionForm";
 import { useState } from "react";
 import RecipeList from "../components/RecipeList/RecipeList";
-import React from 'react'
 
 const RecipeView = () => {
 
@@ -24,7 +23,7 @@ const RecipeView = () => {
   return (
     <div className='main'>
         <RecipeSubmissionForm className='recipeForm' setFormData={setFormData} formData={formData} setRecipes={setRecipes}/>
-
+        <RecipeList className='recipeList' recipes={recipes}/>
     </div>
   )
 }

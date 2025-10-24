@@ -3,10 +3,9 @@ import "./RecipeSubmissionForm.css"
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+
 
 const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
   const [errors, setErrors] = useState({
@@ -43,7 +42,7 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
     setFormData({
         title: '',
         description: '',
-        servings: 0,
+        servings: 2,
         difficulty_level:'easy',
         category:'appetizer',
         cuisine_type:'american',
@@ -179,14 +178,14 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
             <MenuItem value="ounces">Ounces</MenuItem>
             <MenuItem value="pounds">Pounds</MenuItem>
           </Select>
-          <Button variant="contained" type='button' onClick={(event)=>handleAdd(event)}>Add</Button>
-          <div>
-          <Button type="submit">Submit Recipe</Button>
-          </div>
+          <Button variant="contained" type='button' onClick={(event)=>handleAdd(event)}>Add Ingredient</Button>
+          
+          <Button variant="contained" type="submit">Submit Recipe</Button>
+
           <div>
             <h4>Ingredients List:</h4>
             <ul>
-              {ingredients.map((ing, index) => (
+              {formData.ingredients.map((ing, index) => (
                 <li key={index}>
                   {ing.ingredient_quantity} {ing.ingredient_unit} {ing.ingredient_name}
                 </li>
@@ -194,15 +193,6 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
             </ul>
           </div>
         </form>
-        <div>
-          {formData.ingredient_name}
-        </div>
-        <div>
-          {formData.ingredient_quantity}
-        </div>
-        <div>
-          {formData.ingredient_unit}
-        </div>
     </>
   )
 }
