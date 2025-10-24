@@ -102,6 +102,7 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
               maxLength={500} 
               onChange={(event)=>handleChange(event)}
               required/>
+              {errors.description && <p style={{color: 'red'}}>{errors.description}</p>}
           </div>
           <div className="core_field">
             <label>Serving:</label>
@@ -113,6 +114,7 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
               max={20} 
               onChange={(event)=>handleChange(event)}
               required/>
+              {errors.servings && <p style={{color: 'red'}}>{errors.servings}</p>}
           </div>
           <div className="core_field">
             <label>Difficulty_Level:</label>
@@ -169,6 +171,7 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
             onChange={(event)=>handleChange(event)}
             required
           />
+          {errors.ingredient_name && <p style={{color: 'red'}}>{errors.ingredient_name}</p>}
           <label>Quantity:</label>
           <TextField variant="outlined"  type="number"
             label= "ingredient quantity"
@@ -177,6 +180,7 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
             onChange={(event)=>handleChange(event)}
             required
           />
+          {errors.ingredient_quantity && <p style={{color: 'red'}}>{errors.ingredient_quantity}</p>}
           <label>Unit:</label>
           <Select name='ingredient_unit' required
             value={formData.ingredient_unit}
