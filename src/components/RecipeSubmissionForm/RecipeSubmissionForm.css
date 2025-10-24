@@ -1,0 +1,16 @@
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    border: 1px solid rgb(218, 205, 205);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.core_field{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}

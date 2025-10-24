@@ -1,5 +1,12 @@
 import { useState } from "react";
 import "./RecipeSubmissionForm.css"
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
 
 const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
   const [errors, setErrors] = useState({
@@ -11,23 +18,23 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
     ingredient_quantity:'',
   })
 
+  const [ingredients, setIngredients] = useState([])
+
   const validateField = (name,value) =>{
     switch(name){
       case 'title':
-        return (value.length >= 2 && value.length <= 50) ? '':'Title must be between 3 and 50 characters'
+        return (value.length > 2 && value.length <= 50) ? '':'Title must be between 3 and 50 characters'
       case 'description':
         return (value.length >= 10 && value.length <= 500) ? '':'Description must be between 10 and 500 characters'
     }
-    
   }
 
   const handleChange = (event) =>{
     const { name, value } = event.target
-    setFormData(prevData => ({...prevData, [name]:value}))
+    setFormData(prevData => ({...prevData, [name]:value}))    //create a copy of previous state and update the field being changed
 
     const error = validateField(name, value)
-    setErrors(prevData => ({...prevData}))
-
+    setErrors(prevData => ({...prevData, [name]:error}))
   }
 
   const handleSubmit = (event) => {
@@ -37,39 +44,53 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
         title: '',
         description: '',
         servings: 0,
-        difficulty_level:'Easy',
-        category:'Appeitizer',
-        cuisine_type:'American',
+        difficulty_level:'easy',
+        category:'appetizer',
+        cuisine_type:'american',
         recipe_image:'',
         ingredient_name:'',
-        ingredient_quantity:0,
+        ingredient_quantity:1,
         ingredient_unit:'cups',
         ingredients:[]
     })
   }
 
-    const addIngredientList= (event)=>{
-
+  const handleAdd= (event)=>{
+    event.preventDefault();
+    const newIngredient = {
+      ingredient_name: formData.ingredient_name,
+      ingredient_quantity: formData.ingredient_quantity,
+      ingredient_unit: formData.ingredient_unit
     }
+    
+    const updatedIngredients = [...formData.ingredients, newIngredient];
+    setIngredients(updatedIngredients);
+    setFormData(prevData => ({
+      ...prevData,
+      ingredients:updatedIngredients,
+      ingredient_name:'',
+      ingredient_quantity:1,
+      ingredient_unit:'cups'
+    }))
+  }
 
   return (
     <>
         <form onSubmit={(event)=>handleSubmit(event)}>
           <div className="core_field">
-            <label>Titile: </label>
-            <input type="text" 
-              placeholder="title" 
+            <label>Title: </label>
+            <TextField label="Title" variant="outlined"
+              type="text" 
               value={formData.title} 
               name="title" 
-              minLength={3}
-              maxLength={50}
               onChange={(event)=>handleChange(event)} 
               required/>
+              {errors.title && <p style={{color: 'red'}}>{errors.title}</p>}
           </div>
           <div className="core_field">
             <label>Description:</label>
-            <input type="text" 
-              placeholder="description" 
+            <TextField variant="outlined"  type="text" 
+              label="description" 
               value={formData.description} 
               name="description"
               minLength={10}
@@ -79,8 +100,8 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
           </div>
           <div className="core_field">
             <label>Serving:</label>
-            <input type="number" 
-              placeholder="servings" 
+            <TextField variant="outlined"  type="number" 
+              label="servings" 
               value={formData.servings} 
               name="servings"
               min={1}
@@ -90,73 +111,98 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
           </div>
           <div className="core_field">
             <label>Difficulty_Level:</label>
-            <select name='difficulty_level' required>
-              <option>Easy</option>
-              <option>Medium</option>
-              <option>Hard</option>
-            </select>
+            <Select name='difficulty_level' 
+              required
+              value={formData.difficulty_level}
+              onChange={(event)=>handleChange(event)}>
+              <MenuItem value="easy">Easy</MenuItem>
+              <MenuItem value="medium">Medium</MenuItem>
+              <MenuItem value="hard">Hard</MenuItem>
+            </Select>
           </div>
           <div className="core_field">
             <label>Category:</label>
-            <select name='category' required>
-              <option>Appetizer</option>
-              <option>Main Course</option>
-              <option>Dessert</option>
-              <option>Side Dish</option>
-              <option>Beverage</option>
-            </select>
+            <Select name='category' required
+              value={formData.category}
+              onChange={(event)=>handleChange(event)}>
+              <MenuItem value="appetizer">Appetizer</MenuItem>
+              <MenuItem value="main-course">Main Course</MenuItem>
+              <MenuItem value="desert">Dessert</MenuItem>
+              <MenuItem value="side-dish">Side Dish</MenuItem>
+              <MenuItem value="beverage">Beverage</MenuItem>
+            </Select>
           </div>
           <div className="core_field">
             <label>Cuisine:</label>
-            <select name='cuision' required>
-              <option value="american">American</option>
-              <option value="italian">Italian</option>
-              <option value="mexican">Mexican</option>
-              <option value="asian">Asian</option>
-              <option value="mediterranean">Mediterranean</option>
-              <option value="other">Other</option>
-            </select>
+            <Select name='cuisine_type' required
+              value={formData.cuisine_type}
+              onChange={(event)=>handleChange(event)}>
+              <MenuItem value="american">American</MenuItem>
+              <MenuItem value="italian">Italian</MenuItem>
+              <MenuItem value="mexican">Mexican</MenuItem>
+              <MenuItem value="asian">Asian</MenuItem>
+              <MenuItem value="mediterranean">Mediterranean</MenuItem>
+              <MenuItem value="other">Other</MenuItem>
+            </Select>
           </div>
           <div className="core_field">
             <label>Image:</label>
-            <input type="url" 
-              placeholder="recipe_image" 
-              value={formData.image} 
+            <TextField variant="outlined"  type="url" 
+              label="recipe_image" 
+              value={formData.recipe_image} 
               name="recipe_image" 
               onChange={(event)=>handleChange(event)}
               />
           </div>
-            <div> INGREDIENTS </div>
-            <label>Name:</label>
-            <input type="text"
-              placeholder= "ingredient name"
-              value={formData.ingredient_name}
-              name="ingredient_name"
-              onChange={(event)=>handleChange(event)}
-            />
-            <label>Quantity:</label>
-            <input type="number"
-              placeholder= "ingredient quantity"
-              value={formData.ingredient_quantity}
-              name="ingredient_quantity"
-              onChange={(event)=>handleChange(event)}
-            />
-            <label>Unit:</label>
-            <select name='unit' required>
-              <option>cups</option>
-              <option>tablespoons</option>
-              <option>teaspoons</option>
-              <option>ounces</option>
-              <option>pounds</option>
-              <option>grams</option>
-              <option>pieces</option>
-            </select>
-            <button type='click' onClick={(event)=>addIngredientList(event)}>Add</button>
-            <div>
-              <button type="submit">Submit Recipe</button>
-            </div>
+          <div> INGREDIENTS </div>
+          <label>Name:</label>
+          <TextField variant="outlined"  type="text"
+            label= "ingredient name"
+            value={formData.ingredient_name}
+            name="ingredient_name"
+            onChange={(event)=>handleChange(event)}
+          />
+          <label>Quantity:</label>
+          <TextField variant="outlined"  type="number"
+            label= "ingredient quantity"
+            value={formData.ingredient_quantity}
+            name="ingredient_quantity"
+            onChange={(event)=>handleChange(event)}
+          />
+          <label>Unit:</label>
+          <Select name='ingredient_unit' required
+            value={formData.ingredient_unit}
+            onChange={(event)=>handleChange(event)}>
+            <MenuItem value="cups">Cups</MenuItem>
+            <MenuItem value="tablespoons">Table Spoons</MenuItem>
+            <MenuItem value="teaspoons">Teaspoons</MenuItem>
+            <MenuItem value="ounces">Ounces</MenuItem>
+            <MenuItem value="pounds">Pounds</MenuItem>
+          </Select>
+          <Button variant="contained" type='button' onClick={(event)=>handleAdd(event)}>Add</Button>
+          <div>
+          <Button type="submit">Submit Recipe</Button>
+          </div>
+          <div>
+            <h4>Ingredients List:</h4>
+            <ul>
+              {ingredients.map((ing, index) => (
+                <li key={index}>
+                  {ing.ingredient_quantity} {ing.ingredient_unit} {ing.ingredient_name}
+                </li>
+              ))}
+            </ul>
+          </div>
         </form>
-
+        <div>
+          {formData.ingredient_name}
+        </div>
+        <div>
+          {formData.ingredient_quantity}
+        </div>
+        <div>
+          {formData.ingredient_unit}
+        </div>
     </>
   )
 }
