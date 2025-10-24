@@ -22,9 +22,15 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
   const validateField = (name,value) =>{
     switch(name){
       case 'title':
-        return (value.length > 2 && value.length <= 50) ? '':'Title must be between 3 and 50 characters'
+        return (value.length >= 3 && value.length <= 50) ? '':'Title must be between 3 and 50 characters'
       case 'description':
         return (value.length >= 10 && value.length <= 500) ? '':'Description must be between 10 and 500 characters'
+      case 'servings':
+        return (value >=1 && value <=20) ? '':'Servings must be between 1 and 20'
+      case 'ingredient_name':
+        return (value.length >=2 && value.length<=50) ? '':'Ingredient name must be between 2 and 50 Characters'
+      case 'ingredient_quantity':
+        return (value >=0.1 && value<1000 ) ? '':'Ingredient quantity must be greater than 0.1 and less than 1000'
     }
   }
 
@@ -121,7 +127,8 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
           </div>
           <div className="core_field">
             <label>Category:</label>
-            <Select name='category' required
+            <Select name='category' 
+              required
               value={formData.category}
               onChange={(event)=>handleChange(event)}>
               <MenuItem value="appetizer">Appetizer</MenuItem>
@@ -160,6 +167,7 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
             value={formData.ingredient_name}
             name="ingredient_name"
             onChange={(event)=>handleChange(event)}
+            required
           />
           <label>Quantity:</label>
           <TextField variant="outlined"  type="number"
@@ -167,6 +175,7 @@ const RecipeSubmissionForm = ({setFormData, formData, setRecipes}) => {
             value={formData.ingredient_quantity}
             name="ingredient_quantity"
             onChange={(event)=>handleChange(event)}
+            required
           />
           <label>Unit:</label>
           <Select name='ingredient_unit' required
